@@ -1,0 +1,27 @@
+# Node / JavaScript
+node_modules/
+npm-debug.log*
+yarn-error.log*
+dist/
+build/
+
+# Configuraciones de sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de entorno (pueden contener credenciales)
+*.env
+client/.env*
+server/.env*
+
+# Editor/IDE
+.vscode/
+.idea/
+
+# Logs
+logs
+*.log
+
+# Dependencias de cliente (React) y servidor (Node)
+client/node_modules/
+server/node_modules/
