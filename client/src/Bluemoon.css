@@ -1,0 +1,195 @@
+body {
+  background: #b3d1fc;
+  font-family: 'Montserrat', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* NAVBAR */
+.navbar {
+  background: #398bfa;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 32px;
+  margin-bottom: 25px;
+}
+.navbar-links {
+  display: flex;
+  gap: 20px;
+}
+.navbar-link {
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1.1rem;
+  border-radius: 24px;
+  padding: 7px 22px;
+  border: 2.5px solid #181e32;
+  background: #235af6;
+  transition: background .2s, color .2s;
+  margin-right: 6px;
+}
+.navbar-link:last-child {
+  margin-right: 0;
+}
+.navbar-link:hover {
+  background: #fff;
+  color: #235af6;
+  text-decoration: underline;
+}
+
+/* FORMULARIOS */
+.bm-contenedor-form {
+  background: #bad6fc;
+  max-width: 600px;
+  margin: 60px auto 0 auto;
+  padding: 40px 30px 30px 30px;
+  border-radius: 30px;
+  box-shadow: 0 10px 40px #0002;
+  border: 3px solid #488fd9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bm-titulo {
+  font-size: 2.4rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #181e32;
+  letter-spacing: 2px;
+}
+
+.bm-formulario {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bm-input,
+.bm-textarea {
+  width: 92%;
+  max-width: 400px;
+  padding: 13px 18px;
+  margin-bottom: 22px;
+  font-size: 1.1rem;
+  border-radius: 9px;
+  border: 1.5px solid #488fd9;
+  outline: none;
+  font-family: inherit;
+  background: #fff;
+}
+
+.bm-textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.bm-boton {
+  padding: 13px 36px;
+  border-radius: 16px;
+  background: #235af6;
+  color: #fff;
+  border: 3px solid #111a;
+  font-weight: 700;
+  font-size: 1.4rem;
+  cursor: pointer;
+  margin-top: 10px;
+  box-shadow: 0 2px 16px #0002;
+  transition: background .2s, transform .1s;
+}
+
+.bm-boton:hover {
+  background: #1433a0;
+  transform: translateY(-2px) scale(1.03);
+}
+
+.bm-error {
+  color: #f12525;
+  margin-top: 15px;
+  text-align: center;
+}
+.bm-success {
+  color: #059c3c;
+  margin-top: 15px;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .bm-contenedor-form {
+    max-width: 97vw;
+    padding: 18px 6px;
+  }
+  .bm-titulo {
+    font-size: 1.4rem;
+  }
+  .navbar {
+    flex-direction: column;
+    gap: 7px;
+    padding: 10px 3vw;
+  }
+  .navbar-link {
+    font-size: 1rem;
+    padding: 4px 12px;
+  }
+}
+.bluemoon-main {
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #b3d1fd;
+}
+
+.bluemoon-container {
+  background: #b3d1fd;
+  border: 3px solid #367cff;
+  border-radius: 30px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+  width: 600px;
+  max-width: 95vw;
+  padding: 40px 30px 30px 30px;
+  text-align: center;
+}
+
+.bluemoon-container h1 {
+  color: #13192d;
+  font-size: 2.6rem;
+  font-weight: 900;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+}
+
+.bluemoon-desc {
+  color: #222;
+  font-size: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.bluemoon-btn {
+  background: #2251f6;
+  color: #fff;
+  font-size: 1.1rem;
+  padding: 14px 42px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  font-weight: 700;
+  margin-bottom: 22px;
+  transition: background 0.2s;
+  outline: 3px solid #13192d;
+}
+
+.bluemoon-btn:hover {
+  background: #367cff;
+}
+
+.bluemoon-copy {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #222;
+  opacity: 0.9;
+}

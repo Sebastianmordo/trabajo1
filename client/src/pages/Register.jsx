@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { registerUser } from '../features/auth/authSlice'
+import '../Bluemoon.css'
 
 export default function Register() {
   const dispatch = useDispatch()
@@ -16,15 +17,15 @@ export default function Register() {
     try {
       await dispatch(registerUser(form)).unwrap()
       setForm({ username: '', email: '', password: '' })
-    } catch (_) {
-    }
+    } catch (_) {}
   }
 
   return (
-    <div style={{ maxWidth: 400, margin: 'auto', padding: '2rem' }}>
-      <h2>Registro</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="bm-contenedor-form">
+      <h2 className="bm-titulo">Registro</h2>
+      <form className="bm-formulario" onSubmit={handleSubmit}>
         <input
+          className="bm-input"
           type="text"
           name="username"
           placeholder="Usuario"
@@ -32,8 +33,8 @@ export default function Register() {
           onChange={handleChange}
           required
         />
-        <br /><br />
         <input
+          className="bm-input"
           type="email"
           name="email"
           placeholder="Correo"
@@ -41,8 +42,8 @@ export default function Register() {
           onChange={handleChange}
           required
         />
-        <br /><br />
         <input
+          className="bm-input"
           type="password"
           name="password"
           placeholder="Contraseña"
@@ -50,14 +51,12 @@ export default function Register() {
           onChange={handleChange}
           required
         />
-        <br /><br />
-        <button type="submit" disabled={loading}>
+        <button className="bm-boton" type="submit" disabled={loading}>
           {loading ? 'Registrando...' : 'Registrar'}
         </button>
       </form>
-
-      {registerMessage && <p style={{ color: 'green' }}>{registerMessage}</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {registerMessage && <p className="bm-success">{registerMessage}</p>}
+      {error && <p className="bm-error">{error}</p>}
     </div>
   )
 }

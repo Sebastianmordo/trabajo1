@@ -1,5 +1,3 @@
-// server/routes/posts.js
-
 const express = require('express')
 const router = express.Router()
 
@@ -13,8 +11,11 @@ const {
 
 const authMiddleware = require('../middleware/authMiddleware')
 
+// Rutas públicas
 router.get('/', getPosts)
 router.get('/:id', getPostById)
+
+// Rutas protegidas
 router.post('/', authMiddleware, createPost)
 router.put('/:id', authMiddleware, updatePost)
 router.delete('/:id', authMiddleware, deletePost)

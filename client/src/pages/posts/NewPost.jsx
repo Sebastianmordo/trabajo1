@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createPost } from '../../features/posts/postsSlice'
+import '../../Bluemoon.css'
 
 export default function NewPost() {
   const dispatch = useDispatch()
@@ -23,23 +24,16 @@ export default function NewPost() {
       setMessage('Post creado correctamente')
       setForm({ title: '', content: '' })
     } catch (err) {
-      if (err.payload && typeof err.payload === 'string') {
-        setMessage(err.payload)
-      } else if (err.message && typeof err.message === 'string') {
-        setMessage(err.message)
-      } else if (typeof err === 'string') {
-        setMessage(err)
-      } else {
-        setMessage('Error desconocido al crear el post')
-      }
+      setMessage('Error al crear el post')
     }
   }
 
   return (
-    <div style={{ maxWidth: 600, margin: 'auto', padding: '2rem' }}>
-      <h2>Crear Nuevo Post</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="bm-contenedor-form">
+      <h2 className="bm-titulo">Crear Nuevo Post</h2>
+      <form className="bm-formulario" onSubmit={handleSubmit}>
         <input
+          className="bm-input"
           type="text"
           name="title"
           placeholder="Título"
@@ -47,8 +41,8 @@ export default function NewPost() {
           onChange={handleChange}
           required
         />
-        <br /><br />
         <textarea
+          className="bm-textarea"
           name="content"
           placeholder="Contenido"
           value={form.content}
@@ -56,18 +50,16 @@ export default function NewPost() {
           rows="5"
           required
         />
-        <br /><br />
-        <button type="submit" disabled={loading}>
+        <button className="bm-boton" type="submit" disabled={loading}>
           {loading ? 'Creando...' : 'Crear Post'}
         </button>
       </form>
-
       {message && (
-        <p style={{ color: message.toLowerCase().includes('error') || message.toLowerCase().includes('token') ? 'red' : 'green' }}>
+        <p className={message.toLowerCase().includes('error') ? 'bm-error' : 'bm-success'}>
           {message}
         </p>
       )}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p className="bm-error">{error}</p>}
     </div>
   )
 }

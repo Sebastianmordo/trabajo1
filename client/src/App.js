@@ -1,4 +1,5 @@
-import { Routes, Route } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import NavBar from './components/NavBar'
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -8,15 +9,29 @@ import PostsList from './pages/posts/PostsList'
 import NewPost   from './pages/posts/NewPost'
 import EditPost  from './pages/posts/EditPost'
 import NotFound  from './pages/NotFound'
+import Bluemoon from './Bluemoon'
+import './Bluemoon.css'
 
 function App() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const token = params.get('token')
+    if (token) {
+      localStorage.setItem('jwt', token)
+      window.history.replaceState({}, document.title, "/") // Limpia la URL
+      navigate('/posts')
+    }
+  }, [navigate])
+
   return (
     <>
       <NavBar />
       <Routes>
+        <Route path="/" element={<Bluemoon />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login"    element={<Login />} />
-
         <Route
           path="/posts"
           element={
@@ -41,8 +56,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
-        {/*  */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

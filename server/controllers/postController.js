@@ -30,10 +30,9 @@ exports.createPost = async (req, res) => {
     const newPost = new Post({
       title,
       content,
-      author: req.user.id
+      author: req.user.userId // OJO: req.user viene del JWT, así que usa userId
     })
     await newPost.save()
-    // Hacer populate antes de devolver
     const populated = await newPost.populate('author', 'username')
     return res.status(201).json(populated)
   } catch (err) {
@@ -52,7 +51,7 @@ exports.updatePost = async (req, res) => {
       return res.status(404).json({ message: 'Post no encontrado' })
     }
 
-    if (post.author.toString() !== req.user.id) {
+    if (post.author.toString() !== req.user.userId) {
       return res.status(403).json({ message: 'No tienes permiso para editar este post' })
     }
 
@@ -75,7 +74,7 @@ exports.deletePost = async (req, res) => {
       return res.status(404).json({ message: 'Post no encontrado' })
     }
 
-    if (post.author.toString() !== req.user.id) {
+    if (post.author.toString() !== req.user.userId) {
       return res.status(403).json({ message: 'No tienes permiso para eliminar este post' })
     }
     await post.remove()
