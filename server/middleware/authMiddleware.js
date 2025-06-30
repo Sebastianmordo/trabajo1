@@ -4,7 +4,6 @@ function verifyJWT(req, res, next) {
   let token = null;
   const authHeader = req.headers['authorization'];
   if (authHeader) {
-    // Permite "Bearer <token>" o solo "<token>"
     token = authHeader.startsWith("Bearer ")
       ? authHeader.split(" ")[1]
       : authHeader;
