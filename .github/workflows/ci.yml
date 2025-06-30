@@ -36,55 +36,52 @@ jobs:
         working-directory: ./server
         run: npm install
 
-      - name: Install wait-on
-        working-directory: ./server
-        run: npm install --save-dev wait-on
-
       - name: Create .env file
         working-directory: ./server
         run: |
-          echo "MONGO_URI=${{ secrets.MONGO_URI }}"           >> .env
+          echo "MONGO_URI=${{ secrets.MONGO_URI }}"           > .env
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}"         >> .env
           echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}"     >> .env
           echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
           echo "GOOGLE_CALLBACK_URL=${{ secrets.GOOGLE_CALLBACK_URL }}"  >> .env
 
-      - name: Run server tests
+      - name: Run server unit tests
         working-directory: ./server
         run: npm test
 
-      - name: Install client dependencies
+      - name: Install client dependencies & build
         working-directory: ./client
-        run: npm install
+        run: |
+          npm install
+          npm run build
 
-      - name: Build client
-        working-directory: ./client
-        run: npm run build
+      - name: Run end-to-end tests (start server, wait, run Cypress)
+        run: |
+          # 1) instala wait-on localmente
+          cd server
+          npm install --save-dev wait-on
 
-      - name: Start backend (background)
-        working-directory: ./server
-        run: npm run start &
+          # 2) arranca el backend en background
+          npm run start &
 
-      - name: Wait for backend to be ready
-        working-directory: ./server
-        run: npx wait-on http://localhost:5000 --timeout 30000
+          # 3) espera hasta que http://localhost:5000 responda (timeout 60s)
+          npx wait-on http://localhost:5000 --timeout 60000
 
-      - name: Run Cypress tests
-        working-directory: ./client
-        run: npx cypress run
+          # 4) una vez up, ejecuta los tests de Cypress
+          cd ../client
+          npx cypress run
 
   deploy:
     needs: build-and-test
-    runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Heroku CLI and deploy
+      - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.13.15
         with:
-          heroku_api_key:    ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name:   mighty-stream-43963
-          heroku_email:      sr.sebas.ordonez@gmail.com
+          heroku_api_key:  ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: mighty-stream-43963
+          heroku_email:    sr.sebas.ordonez@gmail.com
