@@ -2,9 +2,11 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   build-and-test:
@@ -16,7 +18,10 @@ jobs:
         ports:
           - 27017:27017
         options: >-
-          --health-cmd "mongosh --eval 'db.adminCommand(\"ping\")'" --health-interval 10s --health-timeout 5s --health-retries 5
+          --health-cmd "mongosh --eval 'db.adminCommand(\"ping\")'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout code
@@ -25,42 +30,43 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '20'
 
       - name: Install server dependencies
-        run: npm install
         working-directory: ./server
+        run: npm install
 
       - name: Create .env file
-        run: |
-          echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> server/.env
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> server/.env
-          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> server/.env
-          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> server/.env
-          echo "GOOGLE_CALLBACK_URL=${{ secrets.GOOGLE_CALLBACK_URL }}" >> server/.env
-
-      - name: Run server tests (Jest)
-        run: npm test
         working-directory: ./server
+        run: |
+          echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
+          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
+          echo "GOOGLE_CALLBACK_URL=${{ secrets.GOOGLE_CALLBACK_URL }}" >> .env
+
+      - name: Run server tests
+        working-directory: ./server
+        run: npm test
 
       - name: Install client dependencies
-        run: npm install
         working-directory: ./client
+        run: npm install
 
       - name: Build client
-        run: npm run build
         working-directory: ./client
+        run: npm run build
 
       - name: Start backend (background)
-        run: npm start &
         working-directory: ./server
+        run: npm run start &
 
-      - name: Wait for backend
-        run: npx wait-on http://localhost:5000
+      - name: Wait for backend to be ready
+        run: npx wait-on http://localhost:5000 --timeout 30000
 
       - name: Run Cypress tests
-        run: npx cypress run
         working-directory: ./client
+        run: npx cypress run
 
   deploy:
     needs: build-and-test
@@ -69,10 +75,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Install Heroku CLI and deploy
         uses: akhileshns/heroku-deploy@v3.13.15
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: mighty-stream-43963
           heroku_email: sr.sebas.ordonez@gmail.com
-  
