@@ -2,13 +2,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import '../Bluemoon.css'
 
 export default function NavBar() {
-  // Verifica si hay JWT en localStorage
   const isAuthenticated = !!localStorage.getItem('jwt')
   const navigate = useNavigate()
 
   const handleLogout = () => {
     localStorage.removeItem('jwt')
-    navigate('/login') // Redirige al login
+    navigate('/login')
   }
 
   return (

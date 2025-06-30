@@ -31,6 +31,14 @@ jobs:
         run: npm install
         working-directory: ./server
 
+      - name: Create .env file
+        run: |
+          echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> server/.env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> server/.env
+          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> server/.env
+          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> server/.env
+          echo "GOOGLE_CALLBACK_URL=${{ secrets.GOOGLE_CALLBACK_URL }}" >> server/.env
+
       - name: Run server tests (Jest)
         run: npm test
         working-directory: ./server
@@ -67,3 +75,4 @@ jobs:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: mighty-stream-43963
           heroku_email: sr.sebas.ordonez@gmail.com
+  

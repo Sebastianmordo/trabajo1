@@ -1,23 +1,27 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { registerUser } from '../features/auth/authSlice'
+import { useNavigate } from 'react-router-dom'
 import '../Bluemoon.css'
 
 export default function Register() {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { loading, error, registerMessage } = useSelector(state => state.auth)
   const [form, setForm] = useState({ username: '', email: '', password: '' })
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault()
     try {
       await dispatch(registerUser(form)).unwrap()
+      localStorage.setItem('jwt', registerMessage?.token)
       setForm({ username: '', email: '', password: '' })
-    } catch (_) {}
+      navigate('/posts')
+    } catch {}
   }
 
   return (

@@ -9,21 +9,21 @@ export default function Login() {
   const [message, setMessage] = useState('')
   const { loading, error } = useSelector(state => state.auth)
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value })
     setMessage('')
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault()
     try {
       const result = await dispatch(loginUser(form)).unwrap()
       if (result.token) {
         localStorage.setItem('jwt', result.token)
+        setMessage('Bienvenido')
       }
-      setMessage(`Bienvenido`)
-    } catch (err) {
-      setMessage(err || 'Error en el login')
+    } catch {
+      setMessage('Error en el login')
     }
   }
 
@@ -32,22 +32,14 @@ export default function Login() {
       <h2 className="bm-titulo">Login</h2>
       <form className="bm-formulario" onSubmit={handleSubmit}>
         <input
-          className="bm-input"
-          type="email"
-          name="email"
-          placeholder="Correo"
-          value={form.email}
-          onChange={handleChange}
-          required
+          className="bm-input" type="email"    name="email"
+          placeholder="Correo"                  value={form.email}
+          onChange={handleChange} required
         />
         <input
-          className="bm-input"
-          type="password"
-          name="password"
-          placeholder="Contraseña"
-          value={form.password}
-          onChange={handleChange}
-          required
+          className="bm-input" type="password" name="password"
+          placeholder="Contraseña"              value={form.password}
+          onChange={handleChange} required
         />
         <button className="bm-boton" type="submit" disabled={loading}>
           {loading ? 'Cargando...' : 'Entrar'}
@@ -60,11 +52,10 @@ export default function Login() {
       )}
       {error && <p className="bm-error">{error}</p>}
 
-      {/* Botón de Google login */}
       <a
-        href="http://localhost:5000/auth/google"
+        href="http://localhost:5000/api/auth/google"
         className="bm-boton"
-        style={{ display: "inline-block", marginTop: "1rem", textAlign: "center" }}
+        style={{ marginTop: 16, display: 'inline-block' }}
       >
         Iniciar sesión con Google
       </a>
